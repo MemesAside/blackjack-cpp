@@ -55,6 +55,7 @@ int main(){
     int i = 2;
     int j;
     int k;
+    int l = 1;
     bool aces;
     auto placeholder = card_generator();
     std::string hand = placeholder.first;
@@ -105,8 +106,7 @@ int main(){
                 std::cout << "blackjack! you win";
                 return 0;
             }else{
-                int len = sizeof(numlist);
-                for(j = 0; j < len; j++){
+                for(j = 0; j < i; j++){
                     aces = ace_counter(numlist[j]);
                     if(aces == true){
                         break;
@@ -132,11 +132,11 @@ int main(){
             placeholder = card_generator();
             dealer_hand = dealer_hand + ", " + placeholder.first;
             dealer_total = dealer_total + placeholder.second;
+            l = l + 1;
             std::cout <<"dealer: " << dealer_hand << "\n";
         }
         if(dealer_total > 21){
-            int len2 = sizeof(numlist2);
-            for(k = 0; k < len2; k++){
+            for(k = 0; k < l; k++){
                 aces = ace_counter(numlist2[k]);
                 if(aces == true){
                     numlist2[k] = 1;
