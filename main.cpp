@@ -3,22 +3,6 @@
 #include <string>
 #include <ctime>
 
-/*
-goals:
-make an ace change between 1 and 11 by determining which is better
-make the dealer
-make it easier to use
-kill myself (maybe)
-*/
-
-/*
-plan:
-put all values 'numbers' gives in an array
-make a function that checks all the values
-    put values in individually and the main program uses a for loop to keep inputting values
-if one of the values is 1, check whether 1 or 11 is better
-*/
-
 std::pair<std::string, int> card_generator(){
     int number = int(rand()%13);
     int suit = int(rand()%4);
@@ -70,10 +54,12 @@ int main(){
     srand(time(0));
     int i = 2;
     int j;
+    int k;
     bool aces;
     auto placeholder = card_generator();
     std::string hand = placeholder.first;
     int numlist[100];
+    int numlist2[100];
     numlist[0] = placeholder.second;
     int total = placeholder.second;
     placeholder = card_generator();
@@ -81,10 +67,17 @@ int main(){
     total = total + placeholder.second;
     numlist[1] = placeholder.second;
     std::cout <<"your hand: " << hand << "\n";
-
+    placeholder = card_generator();
+    std::string dealer_hand = placeholder.first;
+    int dealer_total = placeholder.second;
+    numlist2[0] = placeholder.second;
+    std::cout <<"dealer hand: " << dealer_hand << "\n";
     if(total == 21){
         std::cout <<"blackjack! you win";
         return 0;
+    }else if(total == 22){
+        numlist[0] = 1;
+        total = total - 10;
     }
     std::string hitorstand;
     bool pluh = true;
@@ -133,6 +126,36 @@ int main(){
 
     if(total > 21){
         std::cout << "bust! you lose" << "\n";
+    }else{
+        std::cout << "dealer: " << dealer_hand << "\n";
+        while(dealer_total < 17){
+            placeholder = card_generator();
+            dealer_hand = dealer_hand + ", " + placeholder.first;
+            dealer_total = dealer_total + placeholder.second;
+            std::cout <<"dealer: " << dealer_hand << "\n";
+        }
+        if(dealer_total > 21){
+            int len2 = sizeof(numlist2);
+            for(k = 0; k < len2; k++){
+                aces = ace_counter(numlist2[k]);
+                if(aces == true){
+                    numlist2[k] = 1;
+                    dealer_total = dealer_total - 10;
+                    break;
+                }
+            if(aces == true){
+                continue;
+            }else{
+                std::cout << "dealer bust! you win";
+                return 0;
+            }
+            }
+        }else if(dealer_total > total){
+            std::cout << "dealer had a better hand! you lose";
+            return 0;
+        }else{
+            std::cout << "you have the superior hand! you win";
+            return 0;
+        }
     }
-    return 0;
 }
